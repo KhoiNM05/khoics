@@ -1,0 +1,71 @@
+---
+
+import Layout from '../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+const articles = await getCollection("articles");
+const sorted = articles.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+if(!articles) {
+  throw new Error('No articles found');
+  console.log('No articles found');
+}
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+<style>
+.articles-container {
+  max-width: 1500px;
+  margin: auto;
+  padding: 20px;
+}
+
+.article-list {
+  list-style: none;
+  padding: 0;
+}
+
+.article-list li {
+  margin-bottom: 15px;
+  small {
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size:12px;
+  }
+  a:visited {
+    color: #000000;
+  }
+}
+
+.article-list a {
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  
+  visited {
+    color: #000000;
+  }
+ 
+}
+</style>
+
+
+<Layout title="Home | Khoi N.M" description=''>
+
+<div class="articles-container">
+  <slot>
+  <ul class="article-list">
+    {sorted.map(article => (
+      <li>
+        <small>{article.data.date} • {article.data.readTime} MIN READ</small>
+        <br />
+        <a href={`/articles/${article.slug}`}>{article.data.title}</a>
+        <br />
+        <div>
+          {article.data.description}
+        </div>
+      </li>
+    ))}
+  </ul>
+
+</div>
+
+</Layout>

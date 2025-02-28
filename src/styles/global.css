@@ -1,0 +1,125 @@
+/* Link to KaTeX stylesheet should be included in the HTML file */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 50px 100px;
+    text-rendering: optimizeLegibility;
+    background: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size:18px;
+    display: flex;  
+    justify-content: center;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+    gap: 40px;
+    padding: 10px;
+    min-height: 100vh;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+}
+.name {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.bio {
+    color: gray;
+    font-size: 0.9rem;
+    word-wrap: break-word;
+}
+.social-links {
+    align-items: center;
+    text-decoration: none;
+    display: inline;
+    margin-top: 12px;
+}
+.social-icon {
+    width: 24px;
+    height: 24px;
+}
+.navbar {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+    margin-left: 20px;
+}
+.navbar li {
+    font-size: 1rem;
+    font-weight: bold;
+    
+    padding: 8px 0;
+}
+.navbar a {
+    color: #635a58;
+    text-decoration: none;
+    padding-left: 10px;
+    border-left: 2px solid transparent;
+    transition: border-left 0.3s ease, color 0.3s ease;
+}
+.navbar a:hover {
+    border-left: 2px solid gray;
+    color: gray;
+}
+.navbar a.active {
+    border-left: 2px solid black;
+    color: #635a58;
+}
+
+.sidebar {
+    /* width: 25%; 
+  position: fixed; 
+  height: 100vh; 
+  top: 0;
+  left: 0;
+  padding: 20px;
+  background: #f4f4f4;
+  transition: all 0.3s ease; 
+  background: #f4f4f4; */
+  width: 300px; /* Fixed width */
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    height: 100vh; /* Ensures full height */
+    flex-shrink: 0;  /* Smooth width adjustment */
+}
+.content {
+    flex-grow: 1; /* Takes up remaining space */
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    min-height: 100vh; /* Keeps layout stable even with empty content */
+    justify-content: center;
+    align-items: center;
+    
+}
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+
+    .content {
+        min-height: auto;
+    }
+}

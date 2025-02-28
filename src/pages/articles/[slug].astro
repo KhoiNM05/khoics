@@ -1,0 +1,63 @@
+---
+import { getCollection } from "astro:content";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+
+// Fetch articles
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+// Get article data
+const { article } = Astro.props;
+const { Content, headings } = await article.render();
+---
+
+<ArticleLayout 
+  title={article.data.title} 
+  description={article.data.description} 
+  date={article.data.date} 
+  readTime={article.data.readTime}
+>
+
+  <!-- ✅ Table of Contents (Left Sidebar) -->
+  <ul slot="toc" id="table-of-contents">
+    {headings.map((h) => (
+      <li>
+        <a href={`#${h.slug}`} data-slug={h.slug}>{h.text}</a>
+      </li>
+    ))}
+  </ul>
+
+  <!-- ✅ Main Content -->
+  <hr />
+  <Content />
+
+</ArticleLayout>
+
+<!-- ✅ Add JavaScript for Active TOC Highlighting -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tocLinks = document.querySelectorAll("#table-of-contents a");
+    const sections = [...tocLinks].map(link => document.getElementById(link.getAttribute("href").substring(1)));
+
+    function highlightTOC() {
+      let activeSection = "";
+      sections.forEach(section => {
+        if (section && section.getBoundingClientRect().top < window.innerHeight * 0.3) {
+          activeSection = section.id;
+        }
+      });
+
+      tocLinks.forEach(link => {
+        link.style.fontWeight = link.dataset.slug === activeSection ? "bold" : "normal";
+      });
+    }
+
+    window.addEventListener("scroll", highlightTOC);
+    highlightTOC(); // Run initially to highlight correct TOC item on page load
+  });
+</script>
