@@ -13,7 +13,7 @@ import rehypeMathjax from "rehype-mathjax";
 export default defineConfig({
     output: "static",
     base: "/khoics/",
-    site: "https://KhoiNM05.github.io/khoics",
+    site: "https://khoinm05.github.io",
     markdown: {
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeMathjax],
