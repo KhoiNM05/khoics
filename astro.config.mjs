@@ -12,7 +12,7 @@ import rehypeMathjax from "rehype-mathjax";
 // https://astro.build/config
 export default defineConfig({
     output: "static",
-    base: "/",
+    base: "/khoics/",
     site: "https://KhoiNM05.github.io/khoics",
     markdown: {
         remarkPlugins: [remarkMath],

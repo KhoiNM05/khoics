@@ -1,23 +1,23 @@
 const navData = [
     {
         name: 'Articles',
-        path: '/articles/',
+        path: '/khoics/articles/',
     },
     {
         name: "Lecture Notes",
-        path: '/notes/',
+        path: '/khoics/notes/',
     },
     {
         name: "Stories",
-        path: '/stories/',
+        path: '/khoics/stories/',
     },
     {
         name: "Projects",
-        path: '/projects/',
+        path: '/khoics/projects/',
     },
     {
         name: "Contact",
-        path: '/contact/',
+        path: '/khoics/contact/',
     }
 ]
 
