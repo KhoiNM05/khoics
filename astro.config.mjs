@@ -21,3 +21,4 @@ export default defineConfig({
     outDir:"dist",
     integrations:[tailwind(), mdx()],
 });
+

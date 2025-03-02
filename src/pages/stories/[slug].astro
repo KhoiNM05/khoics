@@ -1,7 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import StoryLayout from "../../layouts/StoryLayout.astro";
-import Avatar from "../../assets/avatar.jpg"
+
+export const prerender = true
 // Fetch stories
 
 export async function getStaticPaths() {
@@ -17,9 +18,16 @@ export async function getStaticPaths() {
 }
 // Get story data
 const { story, prevstory, nextstory } = Astro.props;
+if (!story) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not Found",
+  });
+}
 const { Content, headings } = await story.render();
+
 ---
-<!Doctype html>
+
 <StoryLayout
   title={story.data.title} 
   description={story.data.description} 
