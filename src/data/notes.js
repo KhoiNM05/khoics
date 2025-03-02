@@ -2,7 +2,6 @@ const notes = [
     {
       id: 1,
       year: 2024,
-      image: "../src/assets/cs.png",
       language: "English",
       code: "CS101",
       ects: 5,
