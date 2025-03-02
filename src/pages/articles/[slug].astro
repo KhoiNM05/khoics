@@ -1,18 +1,22 @@
 ---
 import { getCollection } from "astro:content";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
-
+import Avatar from "../../assets/avatar.jpg"
 // Fetch articles
+
 export async function getStaticPaths() {
   const articles = await getCollection("articles");
-  return articles.map((article) => ({
+  return articles.map((article, index, arr) => ({
     params: { slug: article.slug },
-    props: { article },
+    props: {
+      article,
+      prevArticle: arr[index - 1] || null,
+      nextArticle: arr[index + 1] || null,
+    },
   }));
 }
-
 // Get article data
-const { article } = Astro.props;
+const { article, prevArticle, nextArticle } = Astro.props;
 const { Content, headings } = await article.render();
 ---
 
@@ -36,6 +40,35 @@ const { Content, headings } = await article.render();
   <hr />
   <Content />
 
+  <div class="author-box">
+    <img src="../src/assets/avatar.jpg" alt="Author Avatar" class="author-avatar">
+    <div>
+      <p><strong>Written by <span class="author-name">Your Name</span></strong></p>
+      <p>Short bio about yourself...</p>
+    </div>
+  </div>
+
+  <nav class="article-navigation">
+    {prevArticle ? (
+      <a href={`/articles/${prevArticle.slug}`} class="prev-article">&#x21e4;{prevArticle.data.title}</a>
+    ) : <div></div>}
+    
+    {nextArticle ? (
+      <a href={`/articles/${nextArticle.slug}`} class="next-article">{nextArticle.data.title}&#x21e5;</a>
+    ) : <div></div>}
+  </nav>
+
+  <section id="comments">
+    <h2>Comments</h2>
+    <script src="https://utteranc.es/client.js"
+        repo="KhoiNM05/khoics"
+        issue-term="title"
+        label="💬 Comment"
+        theme="github-light"
+        crossorigin="anonymous" 
+        async>
+    </script>
+  </section>
 </ArticleLayout>
 
 <!-- ✅ Add JavaScript for Active TOC Highlighting -->
@@ -61,3 +94,56 @@ const { Content, headings } = await article.render();
     highlightTOC(); // Run initially to highlight correct TOC item on page load
   });
 </script>
+
+<style>
+  .author-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    margin-top: 30px;
+  }
+
+  .author-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+
+  .author-name {
+    color: #07273e;
+    font-weight:600;
+  }
+.article-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+  }
+  .prev-article {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .next-article {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    text-align: right;
+  }
+
+
+  .prev-article:hover, .next-article:hover {
+    text-decoration: underline;
+  }
+
+  #comments {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+  }
+</style>
