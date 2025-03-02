@@ -18,5 +18,6 @@ export default defineConfig({
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeMathjax],
     },
+    outDir:"dist",
     integrations:[tailwind(), mdx()],
 });
