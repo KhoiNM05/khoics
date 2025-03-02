@@ -1,0 +1,163 @@
+---
+import { getCollection } from "astro:content";
+import StoryLayout from "../../layouts/StoryLayout.astro";
+import Avatar from "../../assets/avatar.jpg"
+// Fetch stories
+
+export async function getStaticPaths() {
+  const stories = await getCollection("stories");
+  return stories.map((story, index, arr) => ({
+    params: { slug: story.slug },
+    props: {
+      story,
+      prevstory: arr[index - 1] || null,
+      nextstory: arr[index + 1] || null,
+    },
+  }));
+}
+// Get story data
+const { story, prevstory, nextstory } = Astro.props;
+const { Content, headings } = await story.render();
+---
+
+<StoryLayout
+  title={story.data.title} 
+  description={story.data.description} 
+  date={story.data.date} 
+  readTime={story.data.readTime}
+>
+
+  <!-- ✅ Table of Contents (Left Sidebar) -->
+  <ul slot="toc" id="table-of-contents" class="toc">
+    {headings.map((h) => (
+      <li>
+        <a href={`#${h.slug}`} data-slug={h.slug}>{h.text}</a>
+      </li>
+    ))}
+  </ul>
+
+  <!-- ✅ Main Content -->
+  <hr />
+  <Content />
+
+  <div class="author-box">
+    <img src="../src/assets/avatar.jpg" alt="Author Avatar" class="author-avatar">
+    <div>
+      <p><strong>Written by <span class="author-name">Your Name</span></strong></p>
+      <p>Short bio about yourself...</p>
+    </div>
+  </div>
+
+  <nav class="story-navigation">
+    {prevstory ? (
+      <a href={`/stories/${prevstory.slug}`} class="prev-story">&#x21e4;{prevstory.data.title}</a>
+    ) : <div></div>}
+    
+    {nextstory ? (
+      <a href={`/stories/${nextstory.slug}`} class="next-story">{nextstory.data.title}&#x21e5;</a>
+    ) : <div></div>}
+  </nav>
+
+  <section id="comments">
+    <h2>Comments</h2>
+    <script src="https://utteranc.es/client.js"
+        repo="KhoiNM05/khoics"
+        issue-term="title"
+        label="💬 Comment"
+        theme="github-light"
+        crossorigin="anonymous" 
+        async>
+    </script>
+  </section>
+</StoryLayout>
+
+<!-- ✅ Add JavaScript for Active TOC Highlighting -->
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+    const tocLinks = document.querySelectorAll("#table-of-contents a");
+    const sections = [...tocLinks].map(link => document.getElementById(link.getAttribute("href").substring(1)));
+    tocLinks.forEach(link => {
+    const targetId = link.getAttribute("href").substring(1);
+    const targetElem = document.getElementById(targetId);
+
+    if (targetElem) {
+      let depth = 0; // Default indentation for H2
+      if (targetElem.tagName === "H2") {
+        depth = 5; // Increase indentation for H3
+      } else if (targetElem.tagName === "H3") {
+        depth = 15; // Further indentation for H4
+      }
+      
+      link.style.paddingLeft = `${depth}px`; // Apply indentation
+    }
+  });
+    function highlightTOC() {
+      let activeSection = "";
+      sections.forEach(section => {
+        if (section && section.getBoundingClientRect().top < window.innerHeight * 0.3) {
+          activeSection = section.id;
+        }
+      });
+
+      tocLinks.forEach(link => {
+        link.style.fontWeight = link.dataset.slug === activeSection ? "bold" : "normal";
+      });
+    }
+
+    window.addEventListener("scroll", highlightTOC);
+    highlightTOC(); // Run initially to highlight correct TOC item on page load
+  });
+</script>
+
+<style>
+  .author-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    margin-top: 30px;
+  }
+
+  .author-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+
+  .author-name {
+    color: #07273e;
+    font-weight:600;
+  }
+.story-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+  }
+  .prev-story {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .next-story {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    text-align: right;
+  }
+
+
+  .prev-story:hover, .next-story:hover {
+    text-decoration: underline;
+  }
+
+  #comments {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+  }
+</style>

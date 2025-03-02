@@ -1,10 +1,83 @@
 ---
 import Layout from '../layouts/MainLayout.astro';
-
+import { getCollection } from 'astro:content';
+const stories = await getCollection("stories");
+const sorted = stories.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+if(!stories) {
+  throw new Error('No stories found');
+  
+}
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
+<style>
+.stories-container {
+  max-width: 1500px;
+  margin: auto;
+  padding: 20px;
+}
 
-<Layout title="My Blog" description="hello" >
-    <p></p>
+.story-list {
+  list-style: none;
+  padding: 0;
+}
+
+.story-list li {
+  margin-bottom: 15px;
+  small {
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size:12px;
+  }
+  a:visited {
+    color: #010101;
+  }
+}
+
+.story-list a {
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  
+  visited {
+    color: #000000;
+  }
+ 
+}
+.unit {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+
+}
+.unit:hover {
+  transform: translateY(-5px);
+}
+</style>
+
+
+<Layout title="Home | Khoi N.M" description=''>
+
+<div class="stories-container">
+  <slot>
+  <ul class="story-list">
+    {sorted.map(story => (
+      <li >
+        <div class="unit">
+        <small>{story.data.date} • {story.data.readTime} MIN READ</small>
+        <br />
+        <a href={`/stories/${story.slug}`}>{story.data.title}</a>
+        <br />
+        <div>
+          {story.data.description}
+        </div>
+        </div>
+      </li>
+    ))}
+  </ul>
+
+</div>
+
 </Layout>

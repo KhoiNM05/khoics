@@ -1,5 +1,4 @@
 ---
-
 import Layout from '../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 const articles = await getCollection("articles");
@@ -31,7 +30,7 @@ if(!articles) {
     font-size:12px;
   }
   a:visited {
-    color: #000000;
+    color: rgb(58, 52, 58);
   }
 }
 
@@ -41,26 +40,39 @@ if(!articles) {
   font-weight: 600;
   
   visited {
-    color: #000000;
+    color: rgb(58, 52, 58);
   }
  
+}
+.unit {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+
+}
+.unit:hover {
+  transform: translateY(-5px);
 }
 </style>
 
 
-<Layout title="Home | Khoi N.M" description=''>
+<Layout title="Articles" description="Khoi's Articles">
 
 <div class="articles-container">
   <slot>
   <ul class="article-list">
     {sorted.map(article => (
-      <li>
+      <li >
+        <div class="unit">
         <small>{article.data.date} • {article.data.readTime} MIN READ</small>
         <br />
         <a href={`/articles/${article.slug}`}>{article.data.title}</a>
         <br />
         <div>
           {article.data.description}
+        </div>
         </div>
       </li>
     ))}

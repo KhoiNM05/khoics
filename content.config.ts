@@ -14,9 +14,25 @@ const articles = defineCollection({
         id: z.string(),
         title: z.string(),
       })
-    ),  // Optional: Table of contents
+    ).optional(),  // Optional: Table of contents
+  }),
+});
+
+const stories = defineCollection({
+  schema: z.object({
+    slug: z.string(),  // 🚨 Required: Must be unique for each story
+    title: z.string(),  // 🚨 Required: Story title
+    description: z.string().optional(),  // Optional description
+    date: z.string(),  // 🚨 Required: Date in "YYYY-MM-DD" format
+    readTime: z.string().optional(),  // Optional: Estimated read time
+    toc: z.array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+      })
+    ).optional(),  // Optional: Table of contents
   }),
 });
 
 // Export the collections
-export const collections = { articles };
+export const collections = { articles, stories };

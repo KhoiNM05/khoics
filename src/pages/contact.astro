@@ -1,0 +1,109 @@
+---
+import Layout from "../layouts/MainLayout.astro";
+---
+
+<Layout title="Contact | Khoi N.M" description="Contact">
+  <slot>
+    <section class="contact-container">
+      <h1>Contact | Feedback</h1>
+      <form class="contact-form" id="contact-form">
+        <label for="name">NAME</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">EMAIL</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="message">MESSAGE</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+
+        <button type="submit">SEND</button>
+      </form>
+    </section> 
+  </slot>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("contact-form");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = {
+            name: event.target.name.value,
+            email: event.target.email.value,
+            message: event.target.message.value,
+        };
+
+        try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbyCfWHuJ-RuD4lQxEl73LkLL-ghYu5u7sRc31iy6ZeJLCVWEgwYcVhK23uu83VF6lMZpA/exec", {
+            mode: "no-cors",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        const textResponse = await response.text(); // Read raw response as text
+        console.log("Raw Response:", textResponse);
+
+        // Try parsing the response
+        const result = JSON.parse(textResponse);
+        if (result.status === "success") {
+        alert("Gửi thành công!");
+        } else {
+        alert("Lỗi gửi: " + result.message);
+        }
+    } catch (error) {
+        console.error("Error submitting form:", error);
+        form.reset();
+    }
+      });
+    });
+  </script>
+</Layout>
+
+    
+<style>
+    .contact-container {
+      max-width: 600px;
+      margin: 50px auto;
+      font-family: Arial, sans-serif;
+    }
+  
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    label {
+      font-weight: bold;
+      margin: 10px 0 5px;
+    }
+  
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #4b4a4a;
+      border-radius: 10px;
+    }
+  
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #414141;
+      color: #fff;
+      border-radius: 10px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+  
+    button:hover {
+      background: #333;
+    }
+  </style>

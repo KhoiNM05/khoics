@@ -43,8 +43,8 @@ const { Content, headings } = await article.render();
   <div class="author-box">
     <img src="../src/assets/avatar.jpg" alt="Author Avatar" class="author-avatar">
     <div>
-      <p><strong>Written by <span class="author-name">Your Name</span></strong></p>
-      <p>Short bio about yourself...</p>
+      <p><strong>Written by <span class="author-name"> <strong>Khoi Nguyen</strong></span></strong></p>
+      <p>I'm living in Vietnam, currently pursuing a Bachelor in Computer Science at Hanoi University of Science and Technology </p>
     </div>
   </div>
 
@@ -76,7 +76,21 @@ const { Content, headings } = await article.render();
   document.addEventListener("DOMContentLoaded", () => {
     const tocLinks = document.querySelectorAll("#table-of-contents a");
     const sections = [...tocLinks].map(link => document.getElementById(link.getAttribute("href").substring(1)));
+    tocLinks.forEach(link => {
+    const targetId = link.getAttribute("href").substring(1);
+    const targetElem = document.getElementById(targetId);
 
+    if (targetElem) {
+      let depth = 0; // Default indentation for H2
+      if (targetElem.tagName === "H2") {
+        depth = 5; // Increase indentation for H3
+      } else if (targetElem.tagName === "H3") {
+        depth = 15; // Further indentation for H4
+      }
+      
+      link.style.paddingLeft = `${depth}px`; // Apply indentation
+    }
+  });
     function highlightTOC() {
       let activeSection = "";
       sections.forEach(section => {
@@ -93,9 +107,15 @@ const { Content, headings } = await article.render();
     window.addEventListener("scroll", highlightTOC);
     highlightTOC(); // Run initially to highlight correct TOC item on page load
   });
+  
+
+
+
 </script>
 
 <style>
+
+
   .author-box {
     display: flex;
     align-items: center;

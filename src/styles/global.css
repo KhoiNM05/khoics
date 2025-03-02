@@ -1,5 +1,8 @@
 /* Link to KaTeX stylesheet should be included in the HTML file */
-
+.logo {
+   width: 120px; /* Adjust size */
+  height: auto;
+}
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,11 +10,12 @@
 }
 
 body {
-    margin: 50px 100px;
+    
     text-rendering: optimizeLegibility;
     background: #ffffff;
     font-family: 'Inter', sans-serif;
     font-size:18px;
+    color: rgb(58, 52, 58);
     display: flex;  
     justify-content: center;
     line-height: 1.4;

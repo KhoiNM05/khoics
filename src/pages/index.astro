@@ -5,8 +5,33 @@ import Layout from '../layouts/MainLayout.astro';
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout title="My Blog" description="hello" >
-   <slot></slot> 
+<Layout title="Home | Khoi N.M" description="hello" >
+   <slot>
+      <div class="message-container">
+         <p class="message">Thank you for visiting me today. <br> I hope you enjoy my blogsite.   </p>
+   
+   </div>
+   </slot> 
 </Layout>
 
+<style>
+ .message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* background: linear-gradient(to right, #ff7e5f, #feb47b); */
+    text-align: center;
+  }
 
+  .message {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #252525;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+  }
+</style>
